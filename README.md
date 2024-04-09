@@ -23,7 +23,7 @@ The algorithm is run in parallel using a grid search to find the best combinatio
 1. Clone the repository and navigate to the `Evo` directory.
 2. Create a virtual environment using `python3 -m venv env`, activate it `source env/bin/activate`. This will help to keep the dependencies isolated.
 3. Install the required packages using `pip install -r requirements.txt`.
-4. Run the algorithm using `python3 main.py --file "Path to file with expected inpiut"` and analyze the output 
+4. Run the algorithm using `python3 main.py --file "Path to file with expected input"` and analyze the output 
 5. Deactive the virtual environment using `deactivate` and (optionally) remove it using `rm -rf env`.
 
 ## Results

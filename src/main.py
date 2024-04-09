@@ -87,7 +87,8 @@ def grid_search(max_weight, num_items, items):
                 best_i = hof
 
     print("Grid search complete.")
-    print("Individual {}".format(best_i))
+    print("--------")
+    print("Individual: {}".format(best_i))
     print("Best Parameters:\ncxpb={}\nmutpb={}\nngen={}\nFitness={}\n".format(best_params[0], best_params[1], best_params[2], best_fitness))
     return best_params
 
