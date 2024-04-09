@@ -8,7 +8,7 @@ Each individual (solution) is represented by a binary string, where each bit cor
 
 ## Genetic Operators
 - **Crossover**: Uniform crossover is used, where each gene from the parent can be swapped with a fixed probability. This mixes the genetic information from two parents to create a child.
-- **Mutation**: Bit-flip mutation is applied, where each gene in the individual has a chance to be flipped from `0` to `1` or from `1` to `0`. This creates makes the population vary.
+- **Mutation**: Bit flip mutation is applied, where each gene in the individual has a chance to be flipped from `0` to `1` or from `1` to `0`. This creates makes the population vary.
 
 ## Selection Method
 Tournament selection is utilized, where groups of individuals compete against each other, and the best from each group is selected to breed and form the next generation.
@@ -24,7 +24,7 @@ The algorithm is run in parallel using a grid search to find the best combinatio
 2. Create a virtual environment using `python3 -m venv env`, activate it `source env/bin/activate`. This will help to keep the dependencies isolated.
 3. Install the required packages using `pip install -r requirements.txt`.
 4. Run the algorithm using `python3 main.py --file "Path to file with expected inpiut"` and analyze the output 
-5. Deactive the virtual environment using `deactivate` and (optional) remove it using `rm -rf env`.
+5. Deactive the virtual environment using `deactivate` and (optionally) remove it using `rm -rf env`.
 
 ## Results
-Refer to report.txt in the root of the repository. For us, "Fitness" is the total value of items in the knapsack.
+Refer to report.txt. For us, "Fitness" is the total value of items in the knapsack.
