@@ -1,0 +1,9 @@
+# macOS specific
+.DS_Store
+
+# VSCode specific
+.vscode/
+*.code-workspace
+
+# Python-specific
+__pycache__/

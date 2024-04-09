@@ -16,5 +16,15 @@ Tournament selection is utilized, where groups of individuals compete against ea
 ## Fitness Function
 The fitness of an individual is calculated as the total value of items in the knapsack. If the total weight exceeds the knapsack's capacity, the fitness is set to `0` to penalize the solution.
 
-## Execution
+## Algorithm
 The algorithm is run in parallel using a grid search to find the best combination of crossover probability, mutation probability, and number of generations. The fitness of each solution is tracked over generations to observe the evolution of the algorithm.
+
+## How to run the algorithm
+1. Clone the repository and navigate to the `Evo` directory.
+2. Create a virtual environment using `python3 -m venv env`, activate it `source env/bin/activate`. This will help to keep the dependencies isolated.
+3. Install the required packages using `pip install -r requirements.txt`.
+4. Run the algorithm using `python3 main.py --file "Path to file with expected inpiut"` and analyze the output 
+5. Deactive the virtual environment using `deactivate` and (optional) remove it using `rm -rf env`.
+
+## Results
+Refer to report.txt in the root of the repository. For us, "Fitness" is the total value of items in the knapsack.

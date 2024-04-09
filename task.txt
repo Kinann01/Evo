@@ -1,0 +1,16 @@
+"""
+A set of  objects is given with weights  and prices . 
+
+The goal in the knapsack problem is to find a subset of these objects that maximizes the 
+cumulative price (i.e., the sum of the prices of objects in this subset), such that their 
+total weight (i.e., the sum of the weights of objects in the subset) is less than or equal to a given limit .
+
+The task is to implement an evolutionary algorithm to solve this problem. You can either 
+program the entire algorithm from scratch or use something we implemented in the exercises.
+
+You will receive four files specifying the input. Each of these files contains several lines. 
+The first line contains two numbers: the number of objects $n$ and the capacity of the knapsack . 
+Then there are  lines, each containing the price  and weight  of one object. The values on 
+individual lines are separated by a space.
+
+"""
