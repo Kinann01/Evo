@@ -34,7 +34,9 @@ python3 main.py --env CartPole-v1 --generations 50 --episodeDuration 500 --numEp
 
 The fitness function evaluates each genome (neural network) by running it in the specified environment for a number of episodes. The fitness is calculated based on the rewards accumulated during these episodes.
 
+
 CartPole-v1: The fitness is the average reward over multiple episodes. The reward is the number of time steps the pole remains balanced.
+
 MountainCar-v0: The fitness is the average reward over multiple episodes. The reward is -1 for each step taken.
 
 ## Results
