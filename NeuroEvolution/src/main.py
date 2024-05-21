@@ -54,6 +54,7 @@ def runNeat(configPath, environment, numGenerations, episodeDuration, numEpisode
     _demonstrateWinner(winner, config, environment)
     
     visualizer.plot_stats(stats, ylog=False, view=True)
+    # visualizer.plot_species(stats, view=True)
 
 def main():
 
