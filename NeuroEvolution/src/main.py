@@ -8,30 +8,40 @@ def _evaluateGenomes(genomes, config, environment, numEpisodes, episodeDuration)
     env = gym.make(environment)
     for _, genome in genomes:
         genome.fitness = 0
+
         for _ in range(numEpisodes):
             net = neat.nn.FeedForwardNetwork.create(genome, config)
             observation, _ = env.reset()
             totalReward = 0.0
+
             for _ in range(episodeDuration):
-                action = np.argmax(net.activate(observation))
+                act = net.activate(observation)
+                action = np.argmax(act) if len(act) > 1 else act[0]
                 observation, reward, terminated, truncated, _ = env.step(action)
                 totalReward += reward
+
                 if terminated or truncated:
                     break
+
             genome.fitness += totalReward
         genome.fitness /= numEpisodes
 
 def _demonstrateWinner(genome, config, environment):
+
     env = gym.make(environment, render_mode="human")
     winnerNet = neat.nn.FeedForwardNetwork.create(genome, config)
     observation, _ = env.reset()
+
     done = False
     while not done:
         env.render()
-        action = np.argmax(winnerNet.activate(observation))
+        act = winnerNet.activate(observation)
+        action = np.argmax(act) if len(act) > 1 else act[0]
         observation, _, terminated, truncated, _ = env.step(action)
+
         if terminated or truncated:
             break
+
     env.close()
 
 def runNeat(configPath, environment, numGenerations, episodeDuration, numEpisodes):
@@ -39,7 +49,8 @@ def runNeat(configPath, environment, numGenerations, episodeDuration, numEpisode
                          neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, 
                          neat.DefaultStagnation,
-                         configPath)
+                         configPath
+                         )
     
     population = neat.Population(config)
     population.add_reporter(neat.StdOutReporter(True))
@@ -50,7 +61,7 @@ def runNeat(configPath, environment, numGenerations, episodeDuration, numEpisode
         _evaluateGenomes(genomes, config, environment, numEpisodes, episodeDuration)
 
     winner = population.run(_evaluateGenomesWrapper, numGenerations)
-    print('\nBest genome:\n{!s}'.format(winner))
+    print(f"Winner: {winner}")
     _demonstrateWinner(winner, config, environment)
     
     visualizer.plot_stats(stats, ylog=False, view=True)
@@ -79,18 +90,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# Submit your solution via email, which should include:
-# List of environments you tried
-# Description of the algorithm along with its settings (hyperparameters, etc.)
-# Algorithm code + instructions for running it
-# Graphs showing the performance of the best individual over generations
-
-# The NEAT (NeuroEvolution of Augmenting Topologies) algorithm is used for evolving neural networks. NEAT evolves both the weights and the topology of the networks. 
-# The key hyperparameters for NEAT in this implementation are:
-
-# Population Size: The number of genomes in each generation.
-# Mutation Rates: The rates at which weights and structures are mutated.
-# Number of Generations: The number of iterations for the evolutionary process.
-# Fitness Function: The reward obtained from the environment used to evaluate the performance of each genome.
