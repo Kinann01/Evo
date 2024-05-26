@@ -134,21 +134,19 @@ def update_pheromone(P, sols, fits, Q=100, rho=0.6, node_indices=None):
     return (1 - rho) * P + ph_update
 
 def gridSearch(nodes, vehicle, requests, distance, numNodes):
+    parameter_grid = {}
 
-    parameter_grid = { }
-
-    if (numNodes <= 50):
-        parameter_grid = { # Small Graphs (0 - 50 nodes):
-            'ants': [10, 20, 30],
-            'max_iter': [100, 200, 300],
+    if numNodes <= 50:
+        parameter_grid = {
+            'ants': [5, 10, 20],
+            'max_iter': [100, 200],
             'alpha': [1, 2, 3],
-            'beta': [2, 3, 4],
-            'Q': [20, 30, 40],
-            'rho': [0.5, 0.6, 0.7]
+            'beta': [2, 3],
+            'Q': [20, 50, 75],
+            'rho': [0.3, 0.7]
         }
-
-    elif (numNodes > 50 and numNodes <= 200):
-        parameter_grid = { # Medium Graphs (50 - 200 nodes):
+    elif numNodes > 50 and numNodes <= 200:
+        parameter_grid = {
             'ants': [20, 50, 150],
             'max_iter': [200, 500],
             'alpha': [1, 3],
@@ -156,9 +154,8 @@ def gridSearch(nodes, vehicle, requests, distance, numNodes):
             'Q': [50, 150],
             'rho': [0.3, 0.7]
         }
-
     else:
-        parameter_grid = { # Large Graphs (200 - 500 nodes):
+        parameter_grid = {
             'ants': [200, 300, 400],
             'max_iter': [500, 700, 1000],
             'alpha': [1, 2, 3, 4],
@@ -169,9 +166,11 @@ def gridSearch(nodes, vehicle, requests, distance, numNodes):
 
     best_fit = float('inf')
     best_params = None
+    results = []
 
     with ProcessPoolExecutor() as executor:
         futures = []
+        param_list = []
         for ants in parameter_grid['ants']:
             for max_iter in parameter_grid['max_iter']:
                 for alpha in parameter_grid['alpha']:
@@ -179,17 +178,25 @@ def gridSearch(nodes, vehicle, requests, distance, numNodes):
                         for Q in parameter_grid['Q']:
                             for rho in parameter_grid['rho']:
                                 params = (ants, max_iter, alpha, beta, Q, rho)
-                                future = executor.submit(ant_solver_vrp, nodes, vehicle, requests, distance, *params)
+                                future = executor.submit(ant_solver_vrp, nodes, vehicle, requests, distance, *params, seed=42)  # Ensure consistent seed
                                 futures.append(future)
+                                param_list.append(params)
 
-        for future in futures:
-            sol, _, _ = future.result()
-            fit = fitness(nodes, distance, sol)
-            if fit < best_fit:
-                best_fit = fit
-                best_params = params
+        for future, params in zip(futures, param_list):
+            try:
+                sol, _, _ = future.result()
+                fit = fitness(nodes, distance, sol)
+                results.append((fit, params))
+                if fit < best_fit:
+                    best_fit = fit
+                    best_params = params
+                print(f"Tested parameters {params} with fitness {fit}")
+            except Exception as e:
+                print(f"Error evaluating parameters {params}: {e}")
 
     return best_params
+
+
 
 def plot_convergence(fitness_history):
     plt.figure()
@@ -227,12 +234,11 @@ def main():
         print("Best parameters Found: {}".format(best_params)) 
     
     if (best_sol is None):
-        best_sol, _, fitnessHistory = ant_solver_vrp(nodes, vehicle, requests, distance, *best_params)
+        best_sol, _, fitnessHistory = ant_solver_vrp(nodes, vehicle, requests, distance, *best_params, seed=None)
         f = fitnessHistory
 
     print("Best solution: {}".format(best_sol))
     print("Fitness: {}".format(fitness(nodes, distance, best_sol)))
-
     plot_convergence(f)
 
 if __name__ == '__main__':
